@@ -1,4 +1,6 @@
-# .
+# Notes 🎵
+Your app to add notes on desktop by web, created in order to use and learn Composition API in Vue 3.</br>
+Enjoy!
 
 This template should help get you started developing with Vue 3 in Vite.
 
