@@ -1,13 +1,31 @@
 <script setup>
   import { ref } from 'vue';
+  const id = ref(1);
   const showModal = ref(false);
+  const newNote = ref("");
+  const notes = ref([]);
+
+  const randomLightColor = () => {
+  return `hsl(${Math.random() * 360}, 100%, 75%, 0.20)`;
+}
+
+  const addNotes = () =>{
+    notes.value.push({
+      id : id.value++,
+      text : newNote.value,
+      date : new Date(),
+      color: randomLightColor()
+  })
+  showModal.value = false;
+  newNote.value = "";
+  }
 </script>
 <template>
   <main>
     <div v-if="showModal" class="overlay">
       <div class="modal">
-        <textarea name="note" id="note" cols="30" rows="10"></textarea>
-          <button>Addnoting!</button>
+        <textarea v-model="newNote" name="note" id="note" cols="30" rows="10"></textarea>
+          <button @click="addNotes">Add note!</button>
           <button class="close" @click="showModal = false">Close</button>
       </div>
       </div>
@@ -17,9 +35,10 @@
         <button @click="showModal = true">+</button>
       </header>
       <div class="cards-container">
-       <div class="card">
-        <p class="main-text">duewhrewiuhewiouhewiueheiufhewfiuhewfiuhwefiwuhcweicudscjb</p>
-        <p class="date">24/06/2025</p>
+
+       <div v-for="note in notes" class="card" :key="note.id.value" :style="{backgroundColor: note.color}">
+        <p class="main-text">{{note.text}}</p>
+        <p class="date">{{note.date.toLocaleDateString("it-IT")}}</p>
        </div> 
       </div>
     </div>
@@ -29,6 +48,8 @@
   main{
      height:100vh;
      width: 100%; 
+     background-image: url('/src/assets/bgcolor.jpeg');
+     font-family:"Roboto", sans-serif;
   }
   .container{
     max-width:100%;
@@ -46,15 +67,19 @@
     margin-bottom:20px;
     font-size:60px;
   }
-  button{
+  header button{
     border:none;
+    display:flex;
+    justify-content: center;
+    align-items: center;
     padding:10px;
     width:50px;
     height: 50px;
     cursor: pointer;
-    background-color: bisque;
+    background-color: rgba(237, 188, 44,0.5);
     color:white;
     font-size: 40px;
+    border-radius: 15px;
   }
   .cards-container{
     display:flex;
@@ -63,9 +88,9 @@
   .card{
     width:200px;
     height:200px;
-    background-color: rgb(237, 188, 44);
+    background-color: rgba(237, 188, 44,0.5);
     padding:10px;
-    border-radius: 10px;
+    border-radius: 15px;
     display:flex;
     flex-direction: column;
     justify-content: space-between;
@@ -74,6 +99,10 @@
     white-space: normal;
     word-wrap: break-word;
     overflow-wrap: break-word;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(9.4px);
+    -webkit-backdrop-filter: blur(9.4px);
+    border:none;
   }
   .overlay{
     position: absolute;
@@ -87,7 +116,7 @@
   }
   .modal{
     width:750px;
-    background-color: white;
+    background-color: rgba(255, 255, 255,0.3);
     border-radius: 5px;
     padding:30px;
     position:relative;
@@ -101,6 +130,7 @@
     width:100%;
     background-color: blueviolet;
     color:white;
+    border-radius: 15px;
     cursor:pointer;
   }
   .modal .close{
