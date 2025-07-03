@@ -2,6 +2,7 @@
   import { ref } from 'vue';
   const id = ref(1);
   const showModal = ref(false);
+  const error = ref("");
   const newNote = ref("");
   const notes = ref([]);
 
@@ -10,6 +11,10 @@
 }
 
   const addNotes = () =>{
+   if(newNote.value.trim.length < 10){
+    error.value = "The note needs mini mum 10 character";
+    return
+   }
     notes.value.push({
       id : id.value++,
       text : newNote.value,
@@ -18,6 +23,7 @@
   })
   showModal.value = false;
   newNote.value = "";
+  error.value = "";
   }
 </script>
 <template>
@@ -25,6 +31,7 @@
     <div v-if="showModal" class="overlay">
       <div class="modal">
         <textarea v-model="newNote" name="note" id="note" cols="30" rows="10"></textarea>
+        <p v-if="error">{{ error }}</p>
           <button @click="addNotes">Add note!</button>
           <button class="close" @click="showModal = false">Close</button>
       </div>
