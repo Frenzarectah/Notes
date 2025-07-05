@@ -12,7 +12,7 @@
 
   const addNotes = () =>{
    if(newNote.value.trim.length < 10){
-    error.value = "The note needs mini mum 10 character";
+    error.value = "The note needs minimum 10 character";
     return
    }
     notes.value.push({
